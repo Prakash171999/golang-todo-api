@@ -28,3 +28,26 @@ crud:
 .PHONY: migrate-up migrate-down force goto drop create
 
 .PHONY: migrate-up migrate-down force goto drop create auto-create
+
+
+# Migration commands for local server not in docker container
+MIGRATE_LOCAL=migrate -source file://migration -database "mysql://${DBUsername}:${DBPassword}@tcp(${DBHost}:${DBPort})/${DBName}" -verbose
+
+migrate-up-local:
+		$(MIGRATE_LOCAL) up
+migrate-down-local:
+		$(MIGRATE_LOCAL) down 
+force-local:
+		@read -p  "Which version do you want to force?" VERSION; \
+		$(MIGRATE_LOCAL) force $$VERSION
+
+goto-local:
+		@read -p  "Which version do you want to migrate?" VERSION; \
+		$(MIGRATE_LOCAL) goto $$VERSION
+
+drop-local:
+		$(MIGRATE_LOCAL) drop
+
+create-local:
+		@read -p  "What is the name of migration?" NAME; \
+		${MIGRATE_LOCAL} create -ext sql -seq -dir migration  $$NAME

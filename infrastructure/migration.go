@@ -34,19 +34,19 @@ func (m Migrations) Migrate() {
 	HOST := m.env.DBHost
 	PORT := m.env.DBPort
 	DBNAME := m.env.DBName
-	ENVIRONMENT := m.env.Environment
+	// ENVIRONMENT := m.env.Environment
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", USER, PASS, HOST, PORT, DBNAME)
 
-	if ENVIRONMENT != "local" {
-		dsn = fmt.Sprintf(
-			"%s:%s@unix(/cloudsql/%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-			USER,
-			PASS,
-			HOST,
-			DBNAME,
-		)
-	}
+	// if ENVIRONMENT != "local" {
+	// 	dsn = fmt.Sprintf(
+	// 		"%s:%s@unix(/cloudsql/%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+	// 		USER,
+	// 		PASS,
+	// 		HOST,
+	// 		DBNAME,
+	// 	)
+	// }
 
 	migrations, err := migrate.New("file://migration/", "mysql://"+dsn)
 
