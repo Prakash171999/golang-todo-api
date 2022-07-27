@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"boilerplate-api/bootstrap"
+
+	"github.com/joho/godotenv"
+	"go.uber.org/fx"
+)
 
 func main() {
-	fmt.Println("Hello, this is Team backend RnD space......")
+	godotenv.Load()
+	fx.New(bootstrap.Module).Run()
 }
