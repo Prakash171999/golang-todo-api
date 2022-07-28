@@ -1,6 +1,17 @@
 package controllers
 
-import ()
+import (
+	"net/http"
+    "boilerplate-api/api/responses"
+    "boilerplate-api/api/services"
+    "boilerplate-api/infrastructure"
+    "boilerplate-api/models"
+    "boilerplate-api/utils"
+    "boilerplate-api/errors"
+
+    "github.com/gin-gonic/gin"
+
+)
 
 // TodoController -> struct
 type TodoController struct {
@@ -23,13 +34,17 @@ func NewTodoController(
 func (cc TodoController) CreateTodo(c *gin.Context){
 	todo := models.Todo{}
 
+
 	if err := c.ShouldBindJSON(&todo); err != nil{
 		cc.logger.Zap.Error("Error [CreateTodo] (ShouldBindJson) : ", err)
 		err := errors.BadRequest.Wrap(err, "Failed to create todo")
 		responses.HandleError(c, err)
 		return
 	}
-
+	_, err := cc.TodoService.CreateTodo(todo)
+	if err != nil{
+		responses.HandleError(c, err)
+	}
 	responses.SuccessJSON(c, http.StatusOK, "Todo Created Successfully")
 }
 

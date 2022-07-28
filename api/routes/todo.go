@@ -8,10 +8,10 @@ import (
 
 
 // TodoRoutes -> struct 
-type TodoRoutes Struct{
+type TodoRoutes struct {
 	logger                    infrastructure.Logger
     router                    infrastructure.Router
-    todoController controllers.TodoController
+    todoController 			  controllers.TodoController
     middleware                middlewares.FirebaseAuthMiddleware
 }
 
@@ -19,11 +19,12 @@ type TodoRoutes Struct{
 func NewTodoRoutes(logger infrastructure.Logger,
     router infrastructure.Router,
     todoController controllers.TodoController,
-    middleware middlewares.FirebaseAuthMiddleware,) TodoRoutes {
+    middleware middlewares.FirebaseAuthMiddleware,
+	) TodoRoutes {
 		return TodoRoutes{
 			router:                    router,
 			logger:                    logger,
-			todoController: todoController,
+			todoController: 		   todoController,
 			middleware:                middleware,
 		}
 	}
@@ -33,9 +34,9 @@ func (c TodoRoutes) Setup() {
 	c.logger.Zap.Info(" Setting up Todo routes")
     todo := c.router.Gin.Group("/todos")
 	{
-		todo.POST("todo", c.todoController.CreateTodo)
-		todo.GET("todo/all",c.todoController.GetAllTodo)
-		todo.GET("todo/:id", c.todoController.UpdateOneTodo)
-		todo.Delete("todo/delete/:id", c.todoController.DeleteOneTodo)
+		todo.POST("", c.todoController.CreateTodo)
+		todo.GET("",c.todoController.GetAllTodo)
+		// todo.GET("/:id", c.todoController.UpdateOneTodo)
+		// todo.Delete("/:id", c.todoController.DeleteOneTodo)
 	}
 }

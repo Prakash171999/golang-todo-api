@@ -2,8 +2,7 @@ package models
 
 type Category struct {
     Base
-    userId          string `json:"userId"` 
-	todoId          string `json:"userId"` 
+    category_type          string `json:"category_type"` 
 }
 
 func (m Category) TableName() string {
@@ -12,6 +11,6 @@ func (m Category) TableName() string {
 
 func (m Category) ToMap() map[string]interface{} {
     return map[string]interface{}{
-        "category_type":           m.CategoryType,
+        "category_type":           m.category_type,
 }
 }
