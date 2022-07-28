@@ -2,9 +2,12 @@ package models
 
 type Todo struct {
     Base
-    Title          string `json:"title"`
-    Description       string `json:"description"`
-    Image           string `json:"image"`   
+    Title           string `json:"title"`
+    Description     string `json:"description"`
+    Image           string `json:"image"`  
+    StatusId        *int `json:"statusId"`
+    PriorityId      *int `json:"priorityId"`
+    CategoryId      *int `json:"categoryId"`
 }
 
 func (m Todo) TableName() string {
@@ -16,5 +19,8 @@ func (m Todo) ToMap() map[string]interface{} {
         "title":           m.Title,
         "description":       m.Description,
         "image":       m.Image,
+        "statusId":     m.StatusId,
+        "priorityId":   m.PriorityId,
+        "categoryId":   m.CategoryId,     
     }
 }

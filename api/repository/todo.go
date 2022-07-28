@@ -4,6 +4,7 @@ import (
     "boilerplate-api/infrastructure"
     "boilerplate-api/models"
     "boilerplate-api/utils"
+    "fmt"
 )
 
 // TodoRepository database structure
@@ -47,5 +48,33 @@ func (c TodoRepository) GetAllTodo(pagination utils.Pagination) ([]models.Todo, 
         Count(&totalRows).Error
     return todos, totalRows, err
 }
+
+// GetOneTodo -> Get One Todo By Id
+func (c TodoRepository) GetOneTodo(ID int64) (*models.Todo, error) {
+    todo := models.Todo{}
+    // return &Todo, c.db.DB.
+    //     Where("id = ?", ID).First(&Todo).Error
+    err := c.db.DB.Where("id=?", ID).First(&todo).Error
+    if err != nil {
+      fmt.Println(err)
+    }
+    return &todo, err
+}
+
+// UpdateOneTodo -> Update One Todo By Id
+func (c TodoRepository) UpdateOneTodo(todo models.Todo) error {
+    return c.db.DB.Model(&models.Todo{}).
+        Where("id = ?", todo.ID).
+        Updates(map[string]interface{}{
+            "title":            todo.Title,
+            "description":      todo.Description,
+            "image":            todo.Image,
+            "statusId":         todo.StatusId,
+            "priorityId":       todo.PriorityId,
+            "categoryId":       todo.CategoryId,  
+        }).Find(&todo).Error
+}
+
+
 
 

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"strconv"
 	"net/http"
     "boilerplate-api/api/responses"
     "boilerplate-api/api/services"
@@ -10,6 +11,7 @@ import (
     "boilerplate-api/errors"
 
     "github.com/gin-gonic/gin"
+	"fmt"
 
 )
 
@@ -61,4 +63,56 @@ func (cc TodoController) GetAllTodo(c *gin.Context){
         return
 	}
 	responses.JSONCount(c, http.StatusOK, todos, count)
+}
+
+// GetOneTodo -> Get One Todo
+func (cc TodoController) GetOneTodo(c *gin.Context) {
+    ID, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+    todo, err := cc.TodoService.GetOneTodo(ID)
+
+    if err != nil {
+        cc.logger.Zap.Error("Error [GetOneTodo] [db GetOneTodo]: ", err.Error())
+        err := errors.InternalError.Wrap(err, "Failed To Find Todo")
+        responses.HandleError(c, err)
+        return
+    }
+
+	fmt.Println("todo", todo.StatusId)
+
+    responses.JSON(c, http.StatusOK, &todo)
+
+}
+
+// // UpdateOneTodo -> Update One Todo By Id
+func (cc TodoController) UpdateOneTodo(c *gin.Context) {
+    ID, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+    todo := models.Todo{}
+
+    if err := c.ShouldBindJSON(&todo); err != nil {
+        cc.logger.Zap.Error("Error [UpdateTodo] (ShouldBindJson) : ", err)
+        err := errors.BadRequest.Wrap(err, "failed to update todo")
+        responses.HandleError(c, err)
+        return
+    }
+    todo.ID = ID
+
+	updateTodo, err := cc.TodoService.GetOneTodo(ID)
+
+    if err != nil {
+        cc.logger.Zap.Error("Error [GetOneTodo] [db GetOneTodo]: ", err.Error())
+        err := errors.InternalError.Wrap(err, "Failed To Find Todo")
+        responses.HandleError(c, err)
+        return
+    }
+
+	updateTodo.StatusId = todo.StatusId
+
+    if err := cc.TodoService.UpdateOneTodo(*updateTodo); err != nil {
+        cc.logger.Zap.Error("Error [UpdateTodo] [db UpdateTodo]: ", err.Error())
+        err := errors.InternalError.Wrap(err, "failed to update todo")
+        responses.HandleError(c, err)
+        return
+    }
+
+    responses.SuccessJSON(c, http.StatusOK, "Updated successfully")
 }
