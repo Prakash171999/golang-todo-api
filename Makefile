@@ -51,3 +51,6 @@ drop-local:
 create-local:
 		@read -p  "What is the name of migration?" NAME; \
 		${MIGRATE_LOCAL} create -ext sql -seq -dir migration  $$NAME
+
+crud-local:
+	bash automate/scripts/crud.sh
