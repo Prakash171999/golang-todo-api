@@ -75,6 +75,15 @@ func (c TodoRepository) UpdateOneTodo(todo models.Todo) (models.Todo, error) {
         }).Find(&todo).Error
 }
 
+// DeleteOneTodo -> Delete One Todo By Id
+func (c TodoRepository) DeleteOneTodo(ID int64) error {
+    return c.db.DB.
+        Where("id = ?", ID).
+        Delete(&models.Todo{}).
+        Error
+}
+
+
 
 
 

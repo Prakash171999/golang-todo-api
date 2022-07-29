@@ -127,3 +127,20 @@ func (cc TodoController) UpdateOneTodo(c *gin.Context) {
 
     responses.SuccessJSON(c, http.StatusOK, gin.H {"status":"Todo updated successfully", "updatedData": updatedTodo})
 }
+
+// DeleteOneTodo -> Delete One Todo By Id
+func (cc TodoController) DeleteOneTodo(c *gin.Context) {
+    ID, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+    err := cc.TodoService.DeleteOneTodo(ID)
+
+    if err != nil {
+        cc.logger.Zap.Error("Error [DeleteOneTodo] [db DeleteOneTodo]: ", err.Error())
+        err := errors.InternalError.Wrap(err, "Failed to Delete Todo")
+        responses.HandleError(c, err)
+        return
+    }
+
+    responses.SuccessJSON(c, http.StatusOK, "Todo Deleted Sucessfully")
+}
+
+

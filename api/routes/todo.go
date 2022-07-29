@@ -38,6 +38,6 @@ func (c TodoRoutes) Setup() {
 		todo.GET("",c.todoController.GetAllTodo)
 		todo.GET("/:id", c.todoController.GetOneTodo)
 		todo.PUT("/:id", c.todoController.UpdateOneTodo)
-		// todo.Delete("/:id", c.todoController.DeleteOneTodo)
+		todo.DELETE("/:id", c.todoController.DeleteOneTodo)
 	}
 }

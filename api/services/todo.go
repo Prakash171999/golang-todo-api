@@ -38,3 +38,9 @@ func (c TodoService) GetOneTodo(ID int64) (*models.Todo, error) {
 func (c TodoService) UpdateOneTodo(todo models.Todo) (models.Todo, error) {
     return c.repository.UpdateOneTodo(todo)
 }
+
+// DeleteOneTodo -> Delete One Todo By Id
+func (c TodoService) DeleteOneTodo(ID int64) error {
+    return c.repository.DeleteOneTodo(ID)
+
+}
