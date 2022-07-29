@@ -43,11 +43,14 @@ func (cc TodoController) CreateTodo(c *gin.Context){
 		responses.HandleError(c, err)
 		return
 	}
+
+    fmt.Println("todo", todo.ToMap())
+
 	_, err := cc.TodoService.CreateTodo(todo)
 	if err != nil{
 		responses.HandleError(c, err)
 	}
-	responses.SuccessJSON(c, http.StatusOK, "Todo Created Successfully")
+	responses.SuccessJSON(c, http.StatusOK, gin.H{"status":"Todo Created Successfully", "data":todo})
 }
 
 //GetAllTodo -> Get All Todo list
@@ -94,7 +97,7 @@ func (cc TodoController) UpdateOneTodo(c *gin.Context) {
         responses.HandleError(c, err)
         return
     }
-    todo.ID = ID
+   
 
 	updateTodo, err := cc.TodoService.GetOneTodo(ID)
 
@@ -105,14 +108,22 @@ func (cc TodoController) UpdateOneTodo(c *gin.Context) {
         return
     }
 
-	updateTodo.StatusId = todo.StatusId
+    todo.ID = updateTodo.ID
+	
+    // updateTodo.Title = todo.Title
+    // updateTodo.Description = todo.Description
+    // updateTodo.Image = todo.Image
+    // updateTodo.StatusId = todo.StatusId
+    // updateTodo.PriorityId = todo.PriorityId
+    // updateTodo.CategoryId = todo.CategoryId
+    updatedTodo,err := cc.TodoService.UpdateOneTodo(todo);
 
-    if err := cc.TodoService.UpdateOneTodo(*updateTodo); err != nil {
+    if  err != nil {
         cc.logger.Zap.Error("Error [UpdateTodo] [db UpdateTodo]: ", err.Error())
         err := errors.InternalError.Wrap(err, "failed to update todo")
         responses.HandleError(c, err)
         return
     }
 
-    responses.SuccessJSON(c, http.StatusOK, "Updated successfully")
+    responses.SuccessJSON(c, http.StatusOK, gin.H {"status":"Todo updated successfully", "updatedData": updatedTodo})
 }

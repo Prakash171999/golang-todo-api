@@ -5,9 +5,9 @@ type Todo struct {
     Title           string `json:"title"`
     Description     string `json:"description"`
     Image           string `json:"image"`  
-    StatusId        *int `json:"statusId"`
-    PriorityId      *int `json:"priorityId"`
-    CategoryId      *int `json:"categoryId"`
+    StatusId        *int `json:"statusId" gorm:"column:statusId"`
+    PriorityId      *int `json:"priorityId" gorm:"column:priorityId"`
+    CategoryId      *int `json:"categoryId" gorm:"column:categoryId"`
 }
 
 func (m Todo) TableName() string {

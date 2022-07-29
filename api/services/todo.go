@@ -35,6 +35,6 @@ func (c TodoService) GetOneTodo(ID int64) (*models.Todo, error) {
 }
 
 // UpdateOneTodo -> Update One Todo By Id
-func (c TodoService) UpdateOneTodo(todo models.Todo) error {
+func (c TodoService) UpdateOneTodo(todo models.Todo) (models.Todo, error) {
     return c.repository.UpdateOneTodo(todo)
 }

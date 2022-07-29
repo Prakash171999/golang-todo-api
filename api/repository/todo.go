@@ -62,8 +62,8 @@ func (c TodoRepository) GetOneTodo(ID int64) (*models.Todo, error) {
 }
 
 // UpdateOneTodo -> Update One Todo By Id
-func (c TodoRepository) UpdateOneTodo(todo models.Todo) error {
-    return c.db.DB.Model(&models.Todo{}).
+func (c TodoRepository) UpdateOneTodo(todo models.Todo) (models.Todo, error) {
+    return todo, c.db.DB.Model(&models.Todo{}).
         Where("id = ?", todo.ID).
         Updates(map[string]interface{}{
             "title":            todo.Title,
