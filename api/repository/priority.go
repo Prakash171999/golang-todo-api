@@ -6,7 +6,7 @@ import (
 	"boilerplate-api/utils"
 )
 
-//TodoRepository database structure
+//PriorityRepository database structure
 type PriorityRepository struct {
 	db     infrastructure.Database
 	logger infrastructure.Logger
@@ -29,7 +29,7 @@ func (c PriorityRepository) Create(Priority models.Priority) (models.Priority, e
 func (c PriorityRepository) GetAllPriority(pagination utils.Pagination) ([]models.Priority, int64, error) {
 	var priorities []models.Priority
 	var totalRows int64 = 0
-	queryBuilder := c.db.DB.Model(&models.Todo{}).Offset(pagination.Offset)
+	queryBuilder := c.db.DB.Model(&models.Priority{}).Offset(pagination.Offset)
 
 	if !pagination.All {
 		queryBuilder = queryBuilder.Limit(pagination.PageSize)

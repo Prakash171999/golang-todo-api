@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -75,8 +73,6 @@ func (cc TodoController) GetOneTodo(c *gin.Context) {
 		responses.HandleError(c, err)
 		return
 	}
-
-	fmt.Println("todo", todo.StatusId)
 
 	responses.JSON(c, http.StatusOK, &todo)
 
