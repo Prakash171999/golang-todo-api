@@ -33,14 +33,13 @@ func (c StatusRepository) GetAllStatus(pagination utils.Pagination) ([]models.St
 
 	if pagination.Keyword != "" {
 		searchQuery := "%" + pagination.Keyword + "%"
-		queryBuilder.Where(c.db.DB.Where("`priorities`. `title` LIKE ?", searchQuery))
+		queryBuilder.Where(c.db.DB.Where("`status`. `title` LIKE ?", searchQuery))
 	}
 
 	err := queryBuilder.Find(&priorities).Offset(-1).Limit(-1).Count(&totalRows).Error
 	return priorities, totalRows, err
 }
 
-//DeleteOneStatus
 func (c StatusRepository) DeleteOneStatus(ID int64) error {
 	return c.db.DB.Where("id = ?", ID).Delete(&models.Status{}).Error
 }

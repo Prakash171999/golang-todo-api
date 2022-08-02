@@ -8,4 +8,5 @@ var Module = fx.Options(
 	fx.Provide(NewTodoController),
 	fx.Provide(NewPriorityController),
 	fx.Provide(NewStatusController),
+	fx.Provide(NewCategoryController),
 )

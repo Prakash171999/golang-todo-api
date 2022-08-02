@@ -8,4 +8,5 @@ var Module = fx.Options(
 	fx.Provide(NewTodoRepository),
 	fx.Provide(NewPriorityRepository),
 	fx.Provide(NewStatusRepository),
+	fx.Provide(NewCategoryRepository),
 )
