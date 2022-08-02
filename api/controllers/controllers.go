@@ -7,4 +7,5 @@ var Module = fx.Options(
 	fx.Provide(NewUserController),
 	fx.Provide(NewTodoController),
 	fx.Provide(NewPriorityController),
+	fx.Provide(NewStatusController),
 )

@@ -10,4 +10,5 @@ var Module = fx.Options(
 	fx.Provide(NewGmailService),
 	fx.Provide(NewTodoService),
 	fx.Provide(NewPriorityService),
+	fx.Provide(NewStatusService),
 )
