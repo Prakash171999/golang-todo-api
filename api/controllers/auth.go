@@ -16,7 +16,7 @@ type UserAuthController struct {
 	UserAuthService services.UserAuthService
 }
 
-func NewAuthUserController(logger infrastructure.Logger, UserAuthService services.UserAuthService) UserAuthController {
+func NewUserAuthController(logger infrastructure.Logger, UserAuthService services.UserAuthService) UserAuthController {
 	return UserAuthController{
 		logger:          logger,
 		UserAuthService: UserAuthService,
