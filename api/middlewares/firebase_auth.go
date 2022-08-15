@@ -14,18 +14,15 @@ import (
 
 // FirebaseAuthMiddleware structure
 type FirebaseAuthMiddleware struct {
-	service     services.FirebaseService
-	userservice services.UserService
+	service services.FirebaseService
 }
 
 // NewFirebaseAuthMiddleware creates new firebase authentication
 func NewFirebaseAuthMiddleware(
 	service services.FirebaseService,
-	userservice services.UserService,
 ) FirebaseAuthMiddleware {
 	return FirebaseAuthMiddleware{
-		service:     service,
-		userservice: userservice,
+		service: service,
 	}
 }
 
@@ -104,5 +101,3 @@ func (M FirebaseAuthMiddleware) isAdmin(claims map[string]interface{}) bool {
 	return isAdmin
 
 }
-
-
