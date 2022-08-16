@@ -31,5 +31,6 @@ func (c UserAuthRoutes) Setup() {
 	user := c.router.Gin.Group("/user")
 	{
 		user.POST("/register", c.userAuthController.CreateUser)
+		user.POST("/login", c.userAuthController.LoginUser)
 	}
 }

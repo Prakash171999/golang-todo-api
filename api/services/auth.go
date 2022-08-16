@@ -18,3 +18,7 @@ func NewUserAuthService(repository repository.UserAuthRepository) UserAuthServic
 func (c UserAuthService) CreateUser(user models.User) (models.User, error) {
 	return c.repository.Register(user)
 }
+
+func (c UserAuthService) GetUserFromEmail(user_email string) (*models.User, error) {
+	return c.repository.GetUserFromEmail(user_email)
+}

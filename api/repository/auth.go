@@ -31,3 +31,11 @@ func (c UserAuthRepository) Register(User models.User) (models.User, error) {
 	return User, c.db.DB.Create(&User).Error
 
 }
+
+func (c UserAuthRepository) GetUserFromEmail(user_email string) (*models.User, error) {
+	user := models.User{}
+	// err := c.db.DB.Where(&models.User{Email: user_email}).Find(&user).Error
+	err := c.db.DB.Where("email = ?", user_email).Find(&user).Error
+
+	return &user, err
+}

@@ -9,6 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.9.2
 	github.com/aws/aws-sdk-go-v2/config v1.8.3
 	github.com/aws/aws-sdk-go-v2/credentials v1.4.3
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/getsentry/sentry-go v0.11.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.4

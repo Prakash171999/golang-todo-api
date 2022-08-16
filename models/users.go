@@ -2,7 +2,7 @@ package models
 
 type User struct {
 	Base
-	Email       string `json:"email" gorm:"unique"`
+	Email       string `json:"email" binding:"required,email" gorm:"unique"`
 	PhoneNumber int    `json:"phone_number"`
 	FullName    string `json:"full_name"`
 	Password    []byte `json:"-"`

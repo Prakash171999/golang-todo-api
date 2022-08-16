@@ -7,10 +7,15 @@ import (
 	"boilerplate-api/infrastructure"
 	"boilerplate-api/models"
 	"net/http"
+	"strconv"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
+
+const SecretKey = "secret"
 
 type UserAuthController struct {
 	logger          infrastructure.Logger
@@ -52,4 +57,51 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 	}
 
 	responses.SuccessJSON(c, http.StatusOK, "User created successfully")
+}
+
+func (cc UserAuthController) LoginUser(c *gin.Context) {
+	var user_info models.User
+
+	if err := c.ShouldBindJSON(&user_info); err != nil {
+		c.JSON(http.StatusBadRequest, "error found in given data")
+		return
+	}
+
+	user_obj, err := services.UserAuthService.GetUserFromEmail(services.UserAuthService{}, user_info.Email)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "error while fetching user from given email")
+		return
+	}
+	if user_obj.ID == nil {
+		c.JSON(http.StatusBadRequest, "incorrect email address")
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword(user_info.Password, []byte(user_obj.Password)); err != nil {
+		responses.HandleError(c, err)
+		return
+	}
+
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+		Issuer:    strconv.Itoa(int(*user_info.ID)),
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day
+	})
+
+	token, err := claims.SignedString([]byte(SecretKey))
+
+	if err != nil {
+		c.Status(http.StatusInternalServerError)
+		c.JSON(http.StatusInternalServerError, "Could not login")
+		return
+	}
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "refresh",
+		Value:    token,
+		Expires:  time.Now().Add(time.Hour * 24),
+		Secure:   false,
+		HttpOnly: true, //because frontend doesn't need to access it
+	})
+
+	c.JSON(http.StatusOK, token)
 }
