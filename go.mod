@@ -21,6 +21,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	go.uber.org/fx v1.14.2
 	go.uber.org/zap v1.19.1
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/oauth2 v0.0.0-20211005180243-6b3c2da341f1
 	golang.org/x/text v0.3.7
 	google.golang.org/api v0.58.0

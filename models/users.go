@@ -4,7 +4,7 @@ type User struct {
 	Base
 	Email       string `json:"email" gorm:"unique"`
 	PhoneNumber int    `json:"phone_number"`
-	FullName    string `json:"first_name"`
+	FullName    string `json:"full_name"`
 	Password    []byte `json:"-"`
 }
 

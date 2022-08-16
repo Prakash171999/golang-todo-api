@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserAuthController struct {
@@ -16,7 +17,10 @@ type UserAuthController struct {
 	UserAuthService services.UserAuthService
 }
 
-func NewUserAuthController(logger infrastructure.Logger, UserAuthService services.UserAuthService) UserAuthController {
+func NewUserAuthController(
+	logger infrastructure.Logger,
+	UserAuthService services.UserAuthService,
+) UserAuthController {
 	return UserAuthController{
 		logger:          logger,
 		UserAuthService: UserAuthService,
@@ -32,11 +36,20 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 		return
 	}
 
-	_, err := cc.UserAuthService.CreateUser(user)
+	password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+
+	register_user := models.User{
+		FullName:    user.FullName,
+		Email:       user.Email,
+		PhoneNumber: user.PhoneNumber,
+		Password:    password,
+	}
+
+	_, err := cc.UserAuthService.CreateUser(register_user)
 
 	if err != nil {
 		responses.HandleError(c, err)
 	}
 
-	responses.SuccessJSON(c, http.StatusOK, gin.H{"status": "User created successfully", "user": user})
+	responses.SuccessJSON(c, http.StatusOK, "User created successfully")
 }
