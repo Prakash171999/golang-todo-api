@@ -10,14 +10,14 @@ type CategoryRoutes struct {
 	logger           infrastructure.Logger
 	router           infrastructure.Router
 	statusController controllers.CategoryController
-	middleware       middlewares.FirebaseAuthMiddleware
+	middleware       middlewares.JWTAuthMiddleware
 }
 
 func NewCategoryRoutes(
 	logger infrastructure.Logger,
 	router infrastructure.Router,
 	statusController controllers.CategoryController,
-	middleware middlewares.FirebaseAuthMiddleware,
+	middleware middlewares.JWTAuthMiddleware,
 ) CategoryRoutes {
 	return CategoryRoutes{
 		router:           router,
@@ -28,7 +28,7 @@ func NewCategoryRoutes(
 }
 
 func (c CategoryRoutes) Setup() {
-	category := c.router.Gin.Group("/category")
+	category := c.router.Gin.Group("/category").Use(c.middleware.AuthorizeJWT())
 	{
 		category.POST("", c.statusController.CreateCategory)
 		category.GET("", c.statusController.GetAllCategory)

@@ -10,24 +10,25 @@ import (
 )
 
 type JWTAuthMiddleware struct {
-	service services.JWTService
+	jwtService services.JWTService
 }
 
 func NewJWTAuthMiddleware(
-	service services.JWTService,
+	jwtService services.JWTService,
+
 ) JWTAuthMiddleware {
 	return JWTAuthMiddleware{
-		service: service,
+		jwtService: jwtService,
 	}
 }
 
-func AuthorizeJWT() gin.HandlerFunc {
+func (cc JWTAuthMiddleware) AuthorizeJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		const BEARER_SCHEMA = "Bearer "
 		authHeader := c.GetHeader("Authorization")
 		tokenString := authHeader[len(BEARER_SCHEMA):]
 
-		token, err := services.JWTAuthService().ValidateToken(tokenString)
+		token, err := cc.jwtService.ValidateToken(tokenString)
 		if token.Valid {
 			claims := token.Claims.(jwt.MapClaims)
 			fmt.Println("claims", claims)

@@ -6,6 +6,7 @@ import (
 	"boilerplate-api/errors"
 	"boilerplate-api/infrastructure"
 	"boilerplate-api/models"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,15 +18,18 @@ const SecretKey = "secret"
 type UserAuthController struct {
 	logger          infrastructure.Logger
 	UserAuthService services.UserAuthService
+	jwt             services.JWTService
 }
 
 func NewUserAuthController(
 	logger infrastructure.Logger,
 	UserAuthService services.UserAuthService,
+	jwt services.JWTService,
 ) UserAuthController {
 	return UserAuthController{
 		logger:          logger,
 		UserAuthService: UserAuthService,
+		jwt:             jwt,
 	}
 }
 
@@ -63,10 +67,20 @@ func (cc UserAuthController) Login(c *gin.Context) {
 		return
 	}
 	isUserAuthenticated := cc.UserAuthService.LoginUser(user)
+	fmt.Println("user auth=>", isUserAuthenticated)
 	if isUserAuthenticated {
-		return services.JWTAuthService().GenerateToken(user.Email, true)
+		token := cc.jwt.GenerateToken(user.Email, true)
+		c.JSON(http.StatusOK, gin.H{
+			"status": 200,
+			"token":  token,
+		})
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  401,
+			"message": "User not registered.",
+		})
+		return
 	}
-	return
 }
 
 // func (cc UserAuthController) LoginUser(c *gin.Context) {

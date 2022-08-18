@@ -10,14 +10,14 @@ type UserAuthRoutes struct {
 	logger             infrastructure.Logger
 	router             infrastructure.Router
 	userAuthController controllers.UserAuthController
-	middleware         middlewares.FirebaseAuthMiddleware
+	middleware         middlewares.JWTAuthMiddleware
 }
 
 func NewUserAuthRoutes(
 	logger infrastructure.Logger,
 	router infrastructure.Router,
 	userAuthController controllers.UserAuthController,
-	middleware middlewares.FirebaseAuthMiddleware,
+	middleware middlewares.JWTAuthMiddleware,
 ) UserAuthRoutes {
 	return UserAuthRoutes{
 		router:             router,
@@ -31,6 +31,6 @@ func (c UserAuthRoutes) Setup() {
 	user := c.router.Gin.Group("/user")
 	{
 		user.POST("/register", c.userAuthController.CreateUser)
-		user.POST("/login", c.userAuthController.LoginUser)
+		user.POST("/login", c.userAuthController.Login)
 	}
 }

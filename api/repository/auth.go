@@ -3,6 +3,8 @@ package repository
 import (
 	"boilerplate-api/infrastructure"
 	"boilerplate-api/models"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserAuthRepository struct {
@@ -41,8 +43,9 @@ func (c UserAuthRepository) Register(User models.User) (models.User, error) {
 // }
 
 func (c UserAuthRepository) Login(User models.User) bool {
-	if err := c.db.DB.Where("email = ?", User.Email).Where("password = ?", User.Password).First(&User).Error; err != nil {
-		return true
+	password := bcrypt.CompareHashAndPassword(User.Password, []byte(User.Password))
+	if err := c.db.DB.Where("email = ?", User.Email).Where("password = ?", password).First(&User).Error; err != nil {
+		return false
 	}
-	return false
+	return true
 }
