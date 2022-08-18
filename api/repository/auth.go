@@ -32,10 +32,17 @@ func (c UserAuthRepository) Register(User models.User) (models.User, error) {
 
 }
 
-func (c UserAuthRepository) GetUserFromEmail(user_email string) (*models.User, error) {
-	user := models.User{}
-	// err := c.db.DB.Where(&models.User{Email: user_email}).Find(&user).Error
-	err := c.db.DB.Where("email = ?", user_email).Find(&user).Error
+// func (c *UserAuthRepository) GetUserFromEmail(user_email string) (*models.User, error) {
+// 	var user models.User
+// 	// err := c.db.DB.Where(&models.User{Email: user_email}).Find(&user).Error
+// 	err := c.db.DB.Where("email = ?", user_email).Find(&user).Error
 
-	return &user, err
+// 	return &user, err
+// }
+
+func (c UserAuthRepository) Login(User models.User) (models.User, bool) {
+	if err := c.db.DB.Where("email = ?", User.Email).Where("password = ?", User.Password).First(&User).Error; err != nil {
+		return User, true
+	}
+	return User, false
 }

@@ -7,6 +7,7 @@ var Module = fx.Options(
 	fx.Provide(NewFirebaseAuthMiddleware),
 	fx.Provide(NewMiddlewares),
 	fx.Provide(NewDBTransactionMiddleware),
+	fx.Provide(NewJWTAuthMiddleware),
 )
 
 // IMiddleware middleware interface
