@@ -23,9 +23,8 @@ func (c UserAuthService) CreateUser(user models.User) (models.User, error) {
 // 	return c.repository.GetUserFromEmail(user_email)
 // }
 
-func (c UserAuthService) LoginUser(user models.User) (models.User, bool) {
+func (c UserAuthService) LoginUser(user models.User) bool {
 	// var user models.User
-	// fmt.Println("user hai hai", user)
 	// if err := cc.db.DB.Where("email = ?", email).Where("password = ?", password).First(&user).Error; err != nil {
 	// 	return false
 	// }

@@ -40,9 +40,9 @@ func (c UserAuthRepository) Register(User models.User) (models.User, error) {
 // 	return &user, err
 // }
 
-func (c UserAuthRepository) Login(User models.User) (models.User, bool) {
+func (c UserAuthRepository) Login(User models.User) bool {
 	if err := c.db.DB.Where("email = ?", User.Email).Where("password = ?", User.Password).First(&User).Error; err != nil {
-		return User, true
+		return true
 	}
-	return User, false
+	return false
 }

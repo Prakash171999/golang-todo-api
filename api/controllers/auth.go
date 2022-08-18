@@ -62,7 +62,7 @@ func (cc UserAuthController) Login(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	isUserAuthenticated := cc.UserAuthService.LoginUser()(user.Email, user.Password)
+	isUserAuthenticated := cc.UserAuthService.LoginUser(user)
 	if isUserAuthenticated {
 		return services.JWTAuthService().GenerateToken(user.Email, true)
 	}
