@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     full_name VARCHAR(255) NOT NULL,
     email   VARCHAR(255) NOT NULL,
     phone_number   VARCHAR(50) NULL,
-    password        BINARY(64) NOT NULL,
+    password        VARCHAR(300) NOT NULL,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NULL,
     deleted_at DATETIME NULL,

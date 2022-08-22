@@ -42,9 +42,13 @@ func (c UserAuthRepository) Register(User models.User) (models.User, error) {
 // 	return &user, err
 // }
 
-func (c UserAuthRepository) Login(User models.User) bool {
-	password := bcrypt.CompareHashAndPassword(User.Password, []byte(User.Password))
-	if err := c.db.DB.Where("email = ?", User.Email).Where("password = ?", password).First(&User).Error; err != nil {
+func (c UserAuthRepository) Login(user models.UserBindingStruct) bool {
+
+	// password := bcrypt.CompareHashAndPassword([]byte(user.Password), user.Password)
+	password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+	decryotPwd := string(password)
+
+	if err := c.db.DB.Model(&models.User{}).Where("email = ?", user.Email).Where("password = ?", decryotPwd).First(&user).Error; err != nil {
 		return false
 	}
 	return true

@@ -43,12 +43,13 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 	}
 
 	password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
+	fmt.Println("pwwww=>", password, string(password))
 
 	register_user := models.User{
 		FullName:    user.FullName,
 		Email:       user.Email,
 		PhoneNumber: user.PhoneNumber,
-		Password:    password,
+		Password:    string(password),
 	}
 
 	_, err := cc.UserAuthService.CreateUser(register_user)
@@ -61,11 +62,16 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 }
 
 func (cc UserAuthController) Login(c *gin.Context) {
-	var user models.User
+	var user models.UserBindingStruct
 	err := c.ShouldBind(&user)
 	if err != nil {
 		return
 	}
+
+	// password := bcrypt.CompareHashAndPassword([]byte(user.Password), user.Password)
+
+	// fmt.Println("cont user pass", password)
+
 	isUserAuthenticated := cc.UserAuthService.LoginUser(user)
 	fmt.Println("user auth=>", isUserAuthenticated)
 	if isUserAuthenticated {
