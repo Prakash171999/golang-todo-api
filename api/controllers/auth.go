@@ -62,7 +62,7 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 }
 
 func (cc UserAuthController) Login(c *gin.Context) {
-	var user models.UserBindingStruct
+	var user models.User
 	err := c.ShouldBind(&user)
 	if err != nil {
 		return
@@ -72,7 +72,7 @@ func (cc UserAuthController) Login(c *gin.Context) {
 
 	// fmt.Println("cont user pass", password)
 
-	isUserAuthenticated := cc.UserAuthService.LoginUser(user)
+	isUserAuthenticated := cc.UserAuthService.GetUserFromEmail(user)
 	fmt.Println("user auth=>", isUserAuthenticated)
 	if isUserAuthenticated {
 		token := cc.jwt.GenerateToken(user.Email, true)

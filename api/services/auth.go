@@ -3,7 +3,6 @@ package services
 import (
 	"boilerplate-api/api/repository"
 	"boilerplate-api/models"
-	"fmt"
 )
 
 type UserAuthService struct {
@@ -20,16 +19,16 @@ func (c UserAuthService) CreateUser(user models.User) (models.User, error) {
 	return c.repository.Register(user)
 }
 
-// func (c UserAuthService) GetUserFromEmail(user_email string) (*models.User, error) {
-// 	return c.repository.GetUserFromEmail(user_email)
-// }
+func (c UserAuthService) GetUserFromEmail(user models.User) bool {
 
-func (c UserAuthService) LoginUser(user models.UserBindingStruct) bool {
-	// var user models.User
-	// if err := cc.db.DB.Where("email = ?", email).Where("password = ?", password).First(&user).Error; err != nil {
-	// 	return false
-	// }
-	// return true
-	fmt.Println("user", user.Password)
-	return c.repository.Login(user)
+	return c.repository.GetUserFromEmail(user)
 }
+
+// func (c UserAuthService) LoginUser(user models.User) bool {
+// 	// var user models.User
+// 	// if err := cc.db.DB.Where("email = ?", email).Where("password = ?", password).First(&user).Error; err != nil {
+// 	// 	return false
+// 	// }
+// 	// return true
+// 	return c.repository.Login(user)
+// }
