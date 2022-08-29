@@ -72,9 +72,11 @@ func (cc UserAuthController) Login(c *gin.Context) {
 
 	// fmt.Println("cont user pass", password)
 
-	isUserAuthenticated := cc.UserAuthService.GetUserFromEmail(user)
-	fmt.Println("user auth=>", isUserAuthenticated)
-	if isUserAuthenticated {
+	user, err = cc.UserAuthService.GetUserFromEmail(user.Email)
+
+	fmt.Println("user", user)
+
+	if err != nil {
 		token := cc.jwt.GenerateToken(user.Email, true)
 		c.JSON(http.StatusOK, gin.H{
 			"status": 200,

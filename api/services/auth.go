@@ -19,9 +19,9 @@ func (c UserAuthService) CreateUser(user models.User) (models.User, error) {
 	return c.repository.Register(user)
 }
 
-func (c UserAuthService) GetUserFromEmail(user models.User) bool {
+func (c UserAuthService) GetUserFromEmail(userEmail string) (models.User, error) {
 
-	return c.repository.GetUserFromEmail(user)
+	return c.repository.GetUserFromEmail(userEmail)
 }
 
 // func (c UserAuthService) LoginUser(user models.User) bool {
