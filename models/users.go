@@ -12,7 +12,7 @@ type User struct {
 	Email       string `json:"email" binding:"required,email" gorm:"unique"`
 	PhoneNumber int    `json:"phone_number"`
 	FullName    string `json:"full_name"`
-	Password    string `json:"-"`
+	Password    string `json:"password"`
 }
 
 // TableName gives table name of model

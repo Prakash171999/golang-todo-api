@@ -6,7 +6,6 @@ import (
 	"boilerplate-api/errors"
 	"boilerplate-api/infrastructure"
 	"boilerplate-api/models"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -43,7 +42,6 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 	}
 
 	password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
-	fmt.Println("pwwww=>", password, string(password))
 
 	register_user := models.User{
 		FullName:    user.FullName,
@@ -68,27 +66,31 @@ func (cc UserAuthController) Login(c *gin.Context) {
 		return
 	}
 
-	// password := bcrypt.CompareHashAndPassword([]byte(user.Password), user.Password)
+	loggedInUser, err := cc.UserAuthService.GetUserFromEmail(user.Email)
 
-	// fmt.Println("cont user pass", password)
+	err1 := bcrypt.CompareHashAndPassword([]byte(loggedInUser.Password), []byte(user.Password))
 
-	user, err = cc.UserAuthService.GetUserFromEmail(user.Email)
-
-	fmt.Println("user", user)
+	if err1 != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  401,
+			"message": "Incorrect password",
+		})
+		return
+	}
 
 	if err != nil {
-		token := cc.jwt.GenerateToken(user.Email, true)
-		c.JSON(http.StatusOK, gin.H{
-			"status": 200,
-			"token":  token,
-		})
-	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"status":  401,
 			"message": "User not registered.",
 		})
 		return
 	}
+
+	token := cc.jwt.GenerateToken(user.Email, true)
+	c.JSON(http.StatusOK, gin.H{
+		"status": 200,
+		"token":  token,
+	})
 }
 
 // func (cc UserAuthController) LoginUser(c *gin.Context) {

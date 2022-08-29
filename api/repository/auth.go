@@ -32,8 +32,8 @@ func (c UserAuthRepository) Register(User models.User) (models.User, error) {
 
 }
 
-func (c *UserAuthRepository) GetUserFromEmail(userEmail string) (user models.User, error error) {
-	return user, c.db.DB.Where("email = ?", userEmail).First(&user).Error
+func (c *UserAuthRepository) GetUserFromEmail(userEmail string) (loggedInUser models.User, error error) {
+	return loggedInUser, c.db.DB.Where("email = ?", userEmail).First(&loggedInUser).Error
 }
 
 // func (c UserAuthRepository) Login(user models.User) bool {
