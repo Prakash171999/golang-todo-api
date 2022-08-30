@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS todos (
   FOREIGN KEY (statusId) REFERENCES status(id),
   FOREIGN KEY (priorityId) REFERENCES priorities(id),
   FOREIGN KEY (categoryId) REFERENCES categories(id),
-  created_at DATETIME NOT NULL,
+  created_at DATETIME NULL,
   updated_at DATETIME NULL,
   deleted_at DATETIME NULL,
   PRIMARY KEY (id)

@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS status (
   id INT NOT NULL AUTO_INCREMENT,
   status_type VARCHAR(45) NULL,
-  created_at DATETIME NOT NULL,
+  created_at DATETIME NULL,
   updated_at DATETIME NULL,
   deleted_at DATETIME NULL,
   PRIMARY KEY (id)
