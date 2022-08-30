@@ -10,14 +10,14 @@ type StatusRoutes struct {
 	logger           infrastructure.Logger
 	router           infrastructure.Router
 	statusController controllers.StatusController
-	middleware       middlewares.FirebaseAuthMiddleware
+	middleware       middlewares.JWTAuthMiddleware
 }
 
 func NewStatusRoutes(
 	logger infrastructure.Logger,
 	router infrastructure.Router,
 	statusController controllers.StatusController,
-	middleware middlewares.FirebaseAuthMiddleware,
+	middleware middlewares.JWTAuthMiddleware,
 ) StatusRoutes {
 	return StatusRoutes{
 		router:           router,
@@ -28,7 +28,7 @@ func NewStatusRoutes(
 }
 
 func (c StatusRoutes) Setup() {
-	status := c.router.Gin.Group("/status")
+	status := c.router.Gin.Group("/status").Use(c.middleware.AuthorizeJWT())
 	{
 		status.POST("", c.statusController.CreateStatus)
 		status.GET("", c.statusController.GetAllStatus)

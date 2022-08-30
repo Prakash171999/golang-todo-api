@@ -11,7 +11,7 @@ type PriorityRoutes struct {
 	logger             infrastructure.Logger
 	router             infrastructure.Router
 	priorityController controllers.PriorityController
-	middleware         middlewares.FirebaseAuthMiddleware
+	middleware         middlewares.JWTAuthMiddleware
 }
 
 //NewPriorityRoutes -> creates new Priority routes
@@ -19,7 +19,7 @@ func NewPriorityRoutes(
 	logger infrastructure.Logger,
 	router infrastructure.Router,
 	priorityController controllers.PriorityController,
-	middleware middlewares.FirebaseAuthMiddleware,
+	middleware middlewares.JWTAuthMiddleware,
 ) PriorityRoutes {
 	return PriorityRoutes{
 		router:             router,
@@ -31,7 +31,7 @@ func NewPriorityRoutes(
 
 //Setup priority routes
 func (c PriorityRoutes) Setup() {
-	priority := c.router.Gin.Group("/priorities")
+	priority := c.router.Gin.Group("/priorities").Use(c.middleware.AuthorizeJWT())
 	{
 		priority.POST("", c.priorityController.CreatePriority)
 		priority.GET("", c.priorityController.GetAllPriority)
