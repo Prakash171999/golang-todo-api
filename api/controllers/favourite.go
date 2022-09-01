@@ -9,6 +9,7 @@ import (
 	"boilerplate-api/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 type FavouriteController struct {
@@ -55,4 +56,17 @@ func (cc FavouriteController) GetAllFavourites(c *gin.Context) {
 	}
 
 	responses.JSONCount(c, http.StatusOK, favourites, count)
+}
+
+func (cc FavouriteController) DeleteUserFavourite(c *gin.Context) {
+	ID, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	err := cc.FavouriteService.DeleteUserFavourite(ID)
+
+	if err != nil {
+		err := errors.InternalError.Wrap(err, "Failed to Delete Favourite")
+		responses.HandleError(c, err)
+		return
+	}
+
+	responses.SuccessJSON(c, http.StatusOK, "Favourite Deleted Successfully")
 }

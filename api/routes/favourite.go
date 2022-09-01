@@ -32,6 +32,6 @@ func (c FavouriteRoute) Setup() {
 	{
 		favourite.POST("", c.favouriteController.CreateFavourite)
 		favourite.GET("", c.favouriteController.GetAllFavourites)
-		//favourite.DELETE("/:id", c.favouriteController.DeleteOneFavourite)
+		favourite.DELETE("/:id", c.favouriteController.DeleteUserFavourite)
 	}
 }

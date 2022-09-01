@@ -23,3 +23,7 @@ func (c FavouriteService) CreateFavourite(favourite models.Favourite) (models.Fa
 func (c FavouriteService) GetAllFavourites(pagination utils.Pagination) ([]models.UserFavourites, int64, error) {
 	return c.repository.GetAllFavourites(pagination)
 }
+
+func (c FavouriteService) DeleteUserFavourite(ID int64) error {
+	return c.repository.DeleteUserFavourite(ID)
+}

@@ -55,3 +55,7 @@ func (c FavouriteRepository) GetAllFavourites(pagination utils.Pagination) (favo
 		Limit(-1).
 		Count(&count).Error
 }
+
+func (c FavouriteRepository) DeleteUserFavourite(ID int64) error {
+	return c.db.DB.Where("id = ?", ID).Delete(&models.Favourite{}).Error
+}
