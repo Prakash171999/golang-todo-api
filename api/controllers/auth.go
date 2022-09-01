@@ -41,6 +41,17 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 		return
 	}
 
+	registeringUser, _ := cc.UserAuthService.GetUserFromEmail(user.Email)
+
+	//Checking if the user exists
+	if registeringUser.Email == user.Email {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"status":  401,
+			"message": "User already registered with this email. Please try a different email.",
+		})
+		return
+	}
+
 	password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
 
 	register_user := models.User{
@@ -54,6 +65,7 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 
 	if err != nil {
 		responses.HandleError(c, err)
+		return
 	}
 
 	responses.SuccessJSON(c, http.StatusOK, "User created successfully")
