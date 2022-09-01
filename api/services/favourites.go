@@ -20,6 +20,6 @@ func (c FavouriteService) CreateFavourite(favourite models.Favourite) (models.Fa
 	return c.repository.Create(favourite)
 }
 
-func (c FavouriteService) GetAllFavourites(pagination utils.Pagination) ([]models.Favourite, int64, error) {
+func (c FavouriteService) GetAllFavourites(pagination utils.Pagination) ([]models.UserFavourites, int64, error) {
 	return c.repository.GetAllFavourites(pagination)
 }
