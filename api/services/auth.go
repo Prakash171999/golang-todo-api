@@ -24,6 +24,10 @@ func (c UserAuthService) GetUserFromEmail(userEmail string) (models.User, error)
 	return c.repository.GetUserFromEmail(userEmail)
 }
 
+func (c UserAuthService) ResetPassword(user models.User, password string) error {
+	return c.repository.ResetPassword(user, password)
+}
+
 // func (c UserAuthService) LoginUser(user models.User) bool {
 // 	// var user models.User
 // 	// if err := cc.db.DB.Where("email = ?", email).Where("password = ?", password).First(&user).Error; err != nil {
