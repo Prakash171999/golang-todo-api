@@ -32,5 +32,6 @@ func (c UserAuthRoutes) Setup() {
 	{
 		user.POST("/register", c.userAuthController.CreateUser)
 		user.POST("/login", c.userAuthController.Login)
+		user.PUT("/reset-password", c.userAuthController.ResetPassword)
 	}
 }

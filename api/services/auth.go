@@ -24,7 +24,7 @@ func (c UserAuthService) GetUserFromEmail(userEmail string) (models.User, error)
 	return c.repository.GetUserFromEmail(userEmail)
 }
 
-func (c UserAuthService) ResetPassword(user models.User, password string) error {
+func (c UserAuthService) ResetPassword(user models.ResetUser, password string) error {
 	return c.repository.ResetPassword(user, password)
 }
 

@@ -78,7 +78,6 @@ func (cc TodoController) GetOneTodo(c *gin.Context) {
 
 }
 
-// // UpdateOneTodo -> Update One Todo By Id
 func (cc TodoController) UpdateOneTodo(c *gin.Context) {
 	ID, _ := strconv.ParseInt(c.Param("id"), 10, 64)
 	todo := models.Todo{}

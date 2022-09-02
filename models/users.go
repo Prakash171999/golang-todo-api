@@ -15,6 +15,12 @@ type User struct {
 	Password    string `json:"password"`
 }
 
+type ResetUser struct {
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	NewPassword string `json:"new_password"`
+}
+
 // TableName gives table name of model
 func (m User) TableName() string {
 	return "users"

@@ -37,22 +37,13 @@ func (c *UserAuthRepository) GetUserFromEmail(userEmail string) (loggedInUser mo
 }
 
 // Update/Reset user password
-func (c *UserAuthRepository) ResetPassword(User models.User, password string) error {
+func (c *UserAuthRepository) ResetPassword(ResetUser models.ResetUser, password string) error {
+
+	user := models.User{}
+
 	return c.db.DB.Model(&models.User{}).
-		Where("email = ?", User.Email).
+		Where("email = ?", ResetUser.Email).
 		Updates(map[string]interface{}{
 			"password": password,
-		}).Find(&User).Error
+		}).Find(&user).Error
 }
-
-// func (c UserAuthRepository) Login(user models.User) bool {
-
-// password := bcrypt.CompareHashAndPassword([]byte(user.Password), user.Password)
-// password, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 14)
-// decryotPwd := string(password)
-
-// if err := c.db.DB.Model(&models.User{}).Where("email = ?", user.Email).Where("password = ?", decryotPwd).First(&user).Error; err != nil {
-// 	return false
-// }
-// return true
-// }

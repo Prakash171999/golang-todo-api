@@ -6,10 +6,9 @@ import (
 	"boilerplate-api/errors"
 	"boilerplate-api/infrastructure"
 	"boilerplate-api/models"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 )
 
 const SecretKey = "secret"
@@ -83,8 +82,8 @@ func (cc UserAuthController) Login(c *gin.Context) {
 	err1 := bcrypt.CompareHashAndPassword([]byte(loggedInUser.Password), []byte(user.Password))
 
 	if err1 != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"status":  401,
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  400,
 			"message": "Incorrect password",
 		})
 		return
@@ -105,44 +104,52 @@ func (cc UserAuthController) Login(c *gin.Context) {
 	})
 }
 
-// func (cc UserAuthController) LoginUser(c *gin.Context) {
-// 	var user_info models.User
+func (cc UserAuthController) ResetPassword(c *gin.Context) {
+	user := models.ResetUser{}
 
-// 	if err := c.ShouldBindJSON(&user_info); err != nil {
-// 		c.JSON(http.StatusBadRequest, "error found in given data")
-// 	}
+	if err := c.ShouldBindJSON(&user); err != nil {
+		err := errors.BadRequest.Wrap(err, "failed to reset password")
+		responses.HandleError(c, err)
+		return
+	}
 
-// 	user_obj, err := services.UserAuthService.GetUserFromEmail(services.UserAuthService{}, user_info.Email)
-// 	if err != nil {
-// 		c.JSON(http.StatusBadRequest, "error while fetching user from given email")
-// 	}
-// 	if user_obj.ID == nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{"msg": "incorrect email address"})
-// 	}
+	if user.Password == user.NewPassword {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  400,
+			"message": "Old password and new password cannot be same",
+		})
+		return
+	}
 
-// 	if err := bcrypt.CompareHashAndPassword(user_info.Password, []byte(user_obj.Password)); err != nil {
-// 		responses.HandleError(c, err)
-// 	}
+	existingUser, err := cc.UserAuthService.GetUserFromEmail(user.Email)
 
-// 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-// 		Issuer:    strconv.Itoa(int(*user_info.ID)),
-// 		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day
-// 	})
+	if err != nil {
+		err := errors.InternalError.Wrap(err, "Failed To Find user")
+		responses.HandleError(c, err)
+		return
+	}
 
-// 	token, err := claims.SignedString([]byte(SecretKey))
+	err1 := bcrypt.CompareHashAndPassword([]byte(existingUser.Password), []byte(user.Password))
 
-// 	if err != nil {
-// 		c.Status(http.StatusInternalServerError)
-// 		c.JSON(http.StatusInternalServerError, "Could not login")
-// 	}
+	if err1 != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":  400,
+			"message": "Incorrect password",
+		})
+		return
+	}
 
-// 	http.SetCookie(c.Writer, &http.Cookie{
-// 		Name:     "refresh",
-// 		Value:    token,
-// 		Expires:  time.Now().Add(time.Hour * 24),
-// 		Secure:   false,
-// 		HttpOnly: true, //because frontend doesn't need to access it
-// 	})
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.NewPassword), 14)
+	user.Password = string(hashedPassword)
 
-// 	c.JSON(http.StatusOK, token)
-// }
+	resetPwdErr := cc.UserAuthService.ResetPassword(user, user.Password)
+
+	if resetPwdErr != nil {
+		err := errors.InternalError.Wrap(resetPwdErr, "failed to reset password")
+		responses.HandleError(c, err)
+		return
+	}
+
+	responses.SuccessJSON(c, http.StatusOK, gin.H{"status": "Password reset successfully"})
+
+}
