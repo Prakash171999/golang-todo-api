@@ -32,9 +32,8 @@ func (c UserRoutes) Setup() {
 	users := c.router.Gin.Group("/users").Use(c.middleware.AuthorizeJWT())
 	{
 		users.GET("", c.userController.GetAllUsers)
-		//todo.GET("/:id", c.todoController.GetOneTodo)
+		users.GET("/:id", c.userController.GetOneUser)
 		//todo.PUT("/:id", c.todoController.UpdateOneTodo)
-		//
 		//todo.DELETE("/:id", c.todoController.DeleteOneTodo)
 	}
 }

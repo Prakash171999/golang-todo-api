@@ -19,3 +19,7 @@ func NewUserService(repository repository.UserRepository) UserService {
 func (c UserService) GetAllUsers(pagination utils.Pagination) ([]models.User, int64, error) {
 	return c.repository.GetAllUsers(pagination)
 }
+
+func (c UserService) GetOneUser(ID int64) (*models.User, error) {
+	return c.repository.GetOneUser(ID)
+}

@@ -4,6 +4,7 @@ import (
 	"boilerplate-api/infrastructure"
 	"boilerplate-api/models"
 	"boilerplate-api/utils"
+	"fmt"
 )
 
 type UserRepository struct {
@@ -38,4 +39,13 @@ func (c UserRepository) GetAllUsers(pagination utils.Pagination) ([]models.User,
 		Limit(-1).
 		Count(&totalRows).Error
 	return users, totalRows, err
+}
+
+func (c UserRepository) GetOneUser(ID int64) (*models.User, error) {
+	user := models.User{}
+	err := c.db.DB.Where("id = ?", ID).First(&user).Error
+	if err != nil {
+		fmt.Println(err)
+	}
+	return &user, err
 }

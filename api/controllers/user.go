@@ -8,6 +8,7 @@ import (
 	"boilerplate-api/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 type UserController struct {
@@ -36,4 +37,17 @@ func (cc UserController) GetAllUsers(c *gin.Context) {
 		return
 	}
 	responses.JSONCount(c, http.StatusOK, users, count)
+}
+
+func (cc UserController) GetOneUser(c *gin.Context) {
+	ID, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	user, err := cc.UserService.GetOneUser(ID)
+
+	if err != nil {
+		err := errors.InternalError.Wrap(err, "Failed to find the user")
+		responses.HandleError(c, err)
+		return
+	}
+
+	responses.JSON(c, http.StatusOK, &user)
 }
