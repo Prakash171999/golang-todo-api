@@ -10,9 +10,9 @@ type UserBindingStruct struct {
 type User struct {
 	Base
 	Email       string `json:"email" gorm:"unique"`
-	PhoneNumber *int   `json:"phone_number"`
+	PhoneNumber string `json:"phone_number"`
 	FullName    string `json:"full_name"`
-	Password    string `json:"password"`
+	Password    string `json:"-"`
 }
 
 type ResetUser struct {
