@@ -84,3 +84,16 @@ func (cc UserController) UpdateOneUser(c *gin.Context) {
 	responses.SuccessJSON(c, http.StatusOK, gin.H{"status": "User updated successfully", "updatedData": updatedUser})
 
 }
+
+func (cc UserController) DeleteOneUser(c *gin.Context) {
+	ID, _ := strconv.ParseInt(c.Param("id"), 10, 64)
+	err := cc.UserService.DeleteOneUser(ID)
+
+	if err != nil {
+		err := errors.InternalError.Wrap(err, "Failed to Delete user")
+		responses.HandleError(c, err)
+		return
+	}
+
+	responses.SuccessJSON(c, http.StatusOK, "User deleted successfully")
+}

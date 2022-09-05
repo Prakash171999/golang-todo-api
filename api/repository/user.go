@@ -58,3 +58,8 @@ func (c UserRepository) UpdateOneUser(user models.User) (models.User, error) {
 			"phone_number": user.PhoneNumber,
 		}).Find(&user).Error
 }
+
+func (c UserRepository) DeleteOneUser(ID int64) error {
+	return c.db.DB.Where("id = ?", ID).
+		Delete(&models.User{}).Error
+}

@@ -34,6 +34,6 @@ func (c UserRoutes) Setup() {
 		users.GET("", c.userController.GetAllUsers)
 		users.GET("/:id", c.userController.GetOneUser)
 		users.PUT("/:id", c.userController.UpdateOneUser)
-		//todo.DELETE("/:id", c.todoController.DeleteOneTodo)
+		users.DELETE("/:id", c.userController.DeleteOneUser)
 	}
 }

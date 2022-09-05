@@ -27,3 +27,7 @@ func (c UserService) GetOneUser(ID int64) (*models.User, error) {
 func (c UserService) UpdateOneUser(user models.User) (models.User, error) {
 	return c.repository.UpdateOneUser(user)
 }
+
+func (c UserService) DeleteOneUser(ID int64) error {
+	return c.repository.DeleteOneUser(ID)
+}
