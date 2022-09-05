@@ -49,3 +49,12 @@ func (c UserRepository) GetOneUser(ID int64) (*models.User, error) {
 	}
 	return &user, err
 }
+
+func (c UserRepository) UpdateOneUser(user models.User) (models.User, error) {
+	return user, c.db.DB.Model(&models.User{}).
+		Where("id = ?", user.ID).
+		Updates(map[string]interface{}{
+			"full_name":    user.FullName,
+			"phone_number": user.PhoneNumber,
+		}).Find(&user).Error
+}

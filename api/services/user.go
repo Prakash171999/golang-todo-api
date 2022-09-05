@@ -23,3 +23,7 @@ func (c UserService) GetAllUsers(pagination utils.Pagination) ([]models.User, in
 func (c UserService) GetOneUser(ID int64) (*models.User, error) {
 	return c.repository.GetOneUser(ID)
 }
+
+func (c UserService) UpdateOneUser(user models.User) (models.User, error) {
+	return c.repository.UpdateOneUser(user)
+}
