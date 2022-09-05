@@ -10,4 +10,5 @@ var Module = fx.Options(
 	fx.Provide(NewCategoryController),
 	fx.Provide(NewUserAuthController),
 	fx.Provide(NewFavouriteController),
+	fx.Provide(NewUserController),
 )

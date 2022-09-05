@@ -14,4 +14,5 @@ var Module = fx.Options(
 	fx.Provide(NewUserAuthService),
 	fx.Provide(NewJWTAuthService),
 	fx.Provide(NewFavouriteService),
+	fx.Provide(NewUserService),
 )

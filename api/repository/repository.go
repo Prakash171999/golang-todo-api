@@ -10,4 +10,5 @@ var Module = fx.Options(
 	fx.Provide(NewCategoryRepository),
 	fx.Provide(NewUserAuthRepository),
 	fx.Provide(NewFavouriteRepository),
+	fx.Provide(NewUserRepository),
 )
