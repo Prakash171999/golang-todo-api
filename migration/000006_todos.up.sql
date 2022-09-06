@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS todos (
   title VARCHAR(45) NULL,
   description VARCHAR(100) NULL,
   image VARCHAR(300) NULL,
+  start_date VARCHAR(300) NULL,
+  due_date VARCHAR(300) NULL,
   userId int,
   statusId int,
   priorityId int,

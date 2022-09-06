@@ -69,6 +69,8 @@ func (c TodoRepository) UpdateOneTodo(todo models.Todo) (models.Todo, error) {
 			"title":       todo.Title,
 			"description": todo.Description,
 			"image":       todo.Image,
+			"start_date":  todo.StartDate,
+			"end_date":    todo.DueDate,
 			"statusId":    todo.StatusId,
 			"priorityId":  todo.PriorityId,
 			"categoryId":  todo.CategoryId,
