@@ -58,6 +58,7 @@ func (cc UserAuthController) CreateUser(c *gin.Context) {
 		Email:       user.Email,
 		PhoneNumber: user.PhoneNumber,
 		Password:    string(password),
+		UserRole:    user.UserRole,
 	}
 
 	_, err := cc.UserAuthService.CreateUser(register_user)
@@ -97,7 +98,7 @@ func (cc UserAuthController) Login(c *gin.Context) {
 		return
 	}
 
-	token := cc.jwt.GenerateToken(user.Email, true)
+	token := cc.jwt.GenerateToken(user.Email, loggedInUser.UserRole)
 	c.JSON(http.StatusOK, gin.H{
 		"status": 200,
 		"token":  token,

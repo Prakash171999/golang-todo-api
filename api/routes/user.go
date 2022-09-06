@@ -29,11 +29,11 @@ func NewUserRoutes(
 
 func (c UserRoutes) Setup() {
 	c.logger.Zap.Info(" Setting up user routes")
-	users := c.router.Gin.Group("/users").Use(c.middleware.AuthorizeJWT())
+	users := c.router.Gin.Group("/users")
 	{
-		users.GET("", c.userController.GetAllUsers)
+		users.GET("", c.middleware.AdminAuthJWT(), c.userController.GetAllUsers)
 		users.GET("/:id", c.userController.GetOneUser)
 		users.PUT("/:id", c.userController.UpdateOneUser)
-		users.DELETE("/:id", c.userController.DeleteOneUser)
+		users.DELETE("/:id", c.middleware.AdminAuthJWT(), c.userController.DeleteOneUser)
 	}
 }

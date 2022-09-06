@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -12,9 +11,12 @@ import (
 // 	GenerateToken(email string, isUser bool) string
 // 	ValidateToken(token string) (*jwt.Token, error)
 // }
+
+const SECRET_KEY = "secret"
+
 type authCustomClaims struct {
 	Email string `json:"email"`
-	User  bool   `json:"user"`
+	Role  string `json:"role"`
 	jwt.StandardClaims
 }
 
@@ -26,23 +28,25 @@ type JWTService struct {
 // //auth-jwt
 func NewJWTAuthService() JWTService {
 	return JWTService{
-		secretKey: getSecretKey(),
+		secretKey: SECRET_KEY,
 		issure:    "Prakash",
 	}
 }
 
-func getSecretKey() string {
-	secret := os.Getenv("JWT_SECRET")
-	if secret == "" {
-		secret = "secret"
-	}
-	return secret
-}
+//func getSecretKey() string {
+//	secret := os.Getenv("JWT_SECRET")
+//	if secret == "" {
+//		secret = "secret"
+//	}
+//	return secret
+//}
 
-func (jwtService *JWTService) GenerateToken(email string, isUser bool) string {
+func (jwtService *JWTService) GenerateToken(email string, role string) string {
+
+	fmt.Println("SFDSDF", role)
 	claims := &authCustomClaims{
 		email,
-		isUser,
+		role,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 48).Unix(),
 			Issuer:    jwtService.issure,

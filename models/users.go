@@ -13,6 +13,7 @@ type User struct {
 	PhoneNumber string `json:"phone_number"`
 	FullName    string `json:"full_name"`
 	Password    string `json:"-"`
+	UserRole    string `json:"user_role"`
 }
 
 type ResetUser struct {
@@ -33,5 +34,6 @@ func (m User) ToMap() map[string]interface{} {
 		"phone_number": m.PhoneNumber,
 		"full_name":    m.FullName,
 		"password":     m.Password,
+		"user_role":    m.UserRole,
 	}
 }

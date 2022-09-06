@@ -36,5 +36,26 @@ func (cc JWTAuthMiddleware) AuthorizeJWT() gin.HandlerFunc {
 			fmt.Println(err)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "error": "Please enter a valid token string."})
 		}
+		c.Next()
+	}
+
+}
+
+func (cc JWTAuthMiddleware) AdminAuthJWT() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		const BEARER_SCHEMA = "Bearer "
+		authHeader := c.GetHeader("Authorization")
+		tokenString := authHeader[len(BEARER_SCHEMA):]
+
+		token, err := cc.jwtService.ValidateToken(tokenString)
+		claims := token.Claims.(jwt.MapClaims)
+
+		if token.Valid && claims["role"] == "admin" {
+			fmt.Println("claims", claims["role"])
+		} else {
+			fmt.Println(err)
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"status": http.StatusUnauthorized, "error": "You are not authorized to perform this task."})
+		}
+		c.Next()
 	}
 }
