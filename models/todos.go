@@ -14,8 +14,11 @@ type Todo struct {
 
 type TodoQueryParams struct {
 	StartDate string
+	DueDate   string
 	Priority  string
 	Status    string
+	Category  string
+	CreatedAt string
 }
 
 func (m Todo) TableName() string {
