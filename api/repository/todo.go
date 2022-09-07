@@ -27,7 +27,7 @@ func (c TodoRepository) Create(Todo models.Todo) (models.Todo, error) {
 }
 
 // GetAllTodo -> Get All todos
-func (c TodoRepository) GetAllTodo(pagination utils.Pagination) ([]models.Todo, int64, error) {
+func (c TodoRepository) GetAllTodo(pagination utils.Pagination, todoQueryParam models.TodoQueryParams) ([]models.Todo, int64, error) {
 	var todos []models.Todo
 	var totalRows int64 = 0
 	queryBuider := c.db.DB.Model(&models.Todo{}).Offset(pagination.Offset)
@@ -39,6 +39,20 @@ func (c TodoRepository) GetAllTodo(pagination utils.Pagination) ([]models.Todo, 
 	if pagination.Keyword != "" {
 		searchQuery := "%" + pagination.Keyword + "%"
 		queryBuider.Where(c.db.DB.Where("`todos`.`title` LIKE ?", searchQuery))
+	}
+
+	fmt.Println("start", todoQueryParam.StartDate)
+
+	if todoQueryParam.StartDate != "" {
+		queryBuider = queryBuider.Where(c.db.DB.Where("start_date=?", todoQueryParam.StartDate))
+	}
+
+	if todoQueryParam.Priority != "" {
+		queryBuider = queryBuider.Where(c.db.DB.Where("priorityId=?", todoQueryParam.Priority))
+	}
+
+	if todoQueryParam.Status != "" {
+		queryBuider = queryBuider.Where(c.db.DB.Where("statusId=?", todoQueryParam.Status))
 	}
 
 	err := queryBuider.

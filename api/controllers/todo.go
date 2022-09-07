@@ -53,7 +53,7 @@ func (cc TodoController) GetAllTodo(c *gin.Context) {
 	pagination := utils.BuildPagination(c)
 	pagination.Sort = "created_at_desc"
 	todoQueryParams := utils.BuildTodoQueryParams(c)
-	todos, count, err := cc.TodoService.GetAllTodo(pagination)
+	todos, count, err := cc.TodoService.GetAllTodo(pagination, todoQueryParams)
 	fmt.Println("todo query", todoQueryParams)
 
 	if err != nil {

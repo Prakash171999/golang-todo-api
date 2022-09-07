@@ -24,8 +24,8 @@ func (c TodoService) CreateTodo(todo models.Todo) (models.Todo, error) {
 }
 
 // GetAllTodo -> call to create the Todo
-func (c TodoService) GetAllTodo(pagination utils.Pagination) ([]models.Todo, int64, error) {
-	return c.repository.GetAllTodo(pagination)
+func (c TodoService) GetAllTodo(pagination utils.Pagination, todoQueryParam models.TodoQueryParams) ([]models.Todo, int64, error) {
+	return c.repository.GetAllTodo(pagination, todoQueryParam)
 }
 
 // GetOneTodo -> Get One Todo By Id
