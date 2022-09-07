@@ -12,6 +12,13 @@ type Todo struct {
 	CategoryId  *int   `json:"categoryId" gorm:"column:categoryId"`
 }
 
+type TodoQueryParams struct {
+	day   string
+	week  string
+	month string
+	year  string
+}
+
 func (m Todo) TableName() string {
 	return "todos"
 }
