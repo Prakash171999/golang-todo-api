@@ -19,9 +19,6 @@ func BuildTodoQueryParams(c *gin.Context) models.TodoQueryParams {
 		case "due_date":
 			todoListQueryParams.DueDate = queryValue
 			break
-		case "created_at":
-			todoListQueryParams.CreatedAt = queryValue
-			break
 		case "priority":
 			todoListQueryParams.Priority = queryValue
 			break

@@ -47,12 +47,20 @@ func (c TodoRepository) GetAllTodo(pagination utils.Pagination, todoQueryParam m
 		queryBuider = queryBuider.Where(c.db.DB.Where("start_date=?", todoQueryParam.StartDate))
 	}
 
+	if todoQueryParam.DueDate != "" {
+		queryBuider = queryBuider.Where(c.db.DB.Where("due_date=?", todoQueryParam.DueDate))
+	}
+
 	if todoQueryParam.Priority != "" {
 		queryBuider = queryBuider.Where(c.db.DB.Where("priorityId=?", todoQueryParam.Priority))
 	}
 
 	if todoQueryParam.Status != "" {
 		queryBuider = queryBuider.Where(c.db.DB.Where("statusId=?", todoQueryParam.Status))
+	}
+
+	if todoQueryParam.Category != "" {
+		queryBuider = queryBuider.Where(c.db.DB.Where("categoryId=?", todoQueryParam.Category))
 	}
 
 	err := queryBuider.

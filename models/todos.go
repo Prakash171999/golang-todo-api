@@ -18,7 +18,6 @@ type TodoQueryParams struct {
 	Priority  string
 	Status    string
 	Category  string
-	CreatedAt string
 }
 
 func (m Todo) TableName() string {
