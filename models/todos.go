@@ -13,10 +13,9 @@ type Todo struct {
 }
 
 type TodoQueryParams struct {
-	day   string
-	week  string
-	month string
-	year  string
+	Time     string
+	Priority string
+	Status   string
 }
 
 func (m Todo) TableName() string {

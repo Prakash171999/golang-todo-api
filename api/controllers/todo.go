@@ -7,6 +7,7 @@ import (
 	"boilerplate-api/infrastructure"
 	"boilerplate-api/models"
 	"boilerplate-api/utils"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -51,7 +52,9 @@ func (cc TodoController) CreateTodo(c *gin.Context) {
 func (cc TodoController) GetAllTodo(c *gin.Context) {
 	pagination := utils.BuildPagination(c)
 	pagination.Sort = "created_at_desc"
+	todoQueryParams := utils.BuildTodoQueryParams(c)
 	todos, count, err := cc.TodoService.GetAllTodo(pagination)
+	fmt.Println("todo query", todoQueryParams)
 
 	if err != nil {
 		cc.logger.Zap.Error("Error finding Todo records", err.Error())
