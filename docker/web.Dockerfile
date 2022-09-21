@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine
+FROM golang:alpine
 
 # Required because go requires gcc to build
 RUN apk add build-base
@@ -6,6 +6,8 @@ RUN apk add build-base
 RUN apk add inotify-tools
 
 RUN echo $GOPATH
+
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
 COPY . /clean_web
 

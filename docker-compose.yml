@@ -21,8 +21,8 @@ services:
       dockerfile: ./docker/db.Dockerfile
     environment:
       MYSQL_USER: ${DBUsername}
-      MYSQL_PASSWORD: ${DBPassword}
-      MYSQL_DATABASE: ${DBName}
+      MYSQL_PASSWORD: "${DBPassword}"
+      MYSQL_DATABASE: "${DBName}"
     container_name: boilerplate-db
     command:
       [
